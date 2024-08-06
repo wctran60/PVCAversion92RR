@@ -116,7 +116,7 @@ public class RobotHardware {
      * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
      * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
      */
-    public void driveRobot(double Drive, double Turn) {
+    public void driveTankRobot(double Drive, double Turn) {
         // Combine drive and turn for blended motion.
         double left  = Drive + Turn;
         double right = Drive - Turn;
