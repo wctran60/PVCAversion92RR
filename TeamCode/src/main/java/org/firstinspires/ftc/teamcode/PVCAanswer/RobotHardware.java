@@ -114,9 +114,8 @@ public class RobotHardware {
 
 
 
-    /**  FOR TANK DRIVE--CALCULATE POWER TO EACH MOTOR
-    * Calculates the left/right motor powers required to achieve the requested
-    * robot motions: Drive (Axial motion) and Turn (Yaw motion).
+    /**  FOR TANK DRIVE--CALCULATE POWER and PASS IT TO EACH MOTOR
+    * Calculates the left/right motor powers required to achieve the requested robot motions: Drive (Axial motion) and Turn (Yaw motion).
     * Then sends these power levels to the motors.
     * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
     * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is clockwise
@@ -126,30 +125,20 @@ public class RobotHardware {
         double left  = Drive + Turn;
         double right = Drive - Turn;
 
-        // Scale the values so neither exceed +/- 1.0
+        // Scale the power values so neither exceed +/- 1.0
         double max = Math.max(Math.abs(left), Math.abs(right));
         if (max > 1.0) {
             left /= max;
             right /= max;
         }
 
-        // Use existing function to drive both wheels.
-        setDrivePower(left, right);
+        // send power values to both motors.  Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+        frontLeftMotor.setPower(left);
+        frontRightMotor.setPower(right);
     }
 
 
-    /** FOR TANK DRIVE-SEND POWER TO MOTORS.  Pass the requested wheel motor powers to the appropriate hardware drive motors.
-    * @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-    * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-    */
-    public void setDrivePower(double leftWheel, double rightWheel) {
-        // Output the values to the motor drives.
-        frontLeftMotor.setPower(leftWheel);
-        frontRightMotor.setPower(rightWheel);
-    }
-
-
-    /** Pass requested arm power to appropriate hardware drive motor
+    /** Pass requested ARM power to appropriate hardware drive motor
      * @param power driving power (-1.0 to 1.0)
     */
     public void setArmPower(double power) {

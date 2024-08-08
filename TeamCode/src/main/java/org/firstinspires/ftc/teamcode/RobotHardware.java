@@ -107,12 +107,12 @@ public class RobotHardware {
 
 
 
-    /**  FOR TANK DRIVE--CALCULATE POWER TO EACH MOTOR
-    * Calculates the left/right motor powers required to achieve the requested robot motions:
-       * Drive (Axial motion) and Turn (Yaw motion).  Then sends these power levels to the motors.
-    * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-    * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is clockwise
-    */
+    /**  FOR TANK DRIVE--CALCULATE POWER and PASS IT TO EACH MOTOR
+     * Calculates the left/right motor powers required to achieve the requested robot motions: Drive (Axial motion) and Turn (Yaw motion).
+     * Then sends these power levels to the motors.
+     * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+     * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is clockwise
+     */
     public void driveTankRobot(double Drive, double Turn) {
         // Combine drive and turn for blended motion.
 
@@ -120,23 +120,12 @@ public class RobotHardware {
         // Scale the values so neither exceed +/- 1.0
 
 
-        // Use existing function to drive both wheels.
+        // send power values to both motors.  Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
 
     }
 
 
-    /** FOR TANK DRIVE-SEND POWER TO MOTORS.   Pass requested wheel motor powers to appropriate hardware drive motors.
-    * @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-    * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-    */
-    public void setDrivePower(double leftWheel, double rightWheel) {
-        // Output the values to the motor drives.
-
-
-
-    }
-
-    /** Pass requested arm power to the appropriate hardware drive motor
+    /** Pass requested ARM power to the appropriate hardware drive motor
      * @param power driving power (-1.0 to 1.0)
     */
     public void setArmPower(double power) {
