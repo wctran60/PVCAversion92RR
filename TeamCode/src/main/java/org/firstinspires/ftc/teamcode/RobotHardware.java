@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.util.Range;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +16,8 @@ public class RobotHardware {
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
     private DcMotor frontLeftMotor = null;
-
+    private DcMotor frontRightMotor = null;
+    private DcMotor armMotor = null;
 
 
 
@@ -23,13 +26,13 @@ public class RobotHardware {
 
 
     private Servo   leftHand = null;
-
+    private Servo  rightHand = null;
 
     // Define Drive constants.  Make them public so they CAN be used by the calling OpMode
     public static final double MID_SERVO       =  0.5 ;
-
-
-
+    public static final double HAND_SPEED = 0.02 ;
+    public static final double ARM_UP_POWER = 0.45;
+    public static final double ARM_DOWN_POWER = -0.45;
 
 
     //IMU sensor object.
@@ -48,8 +51,8 @@ public class RobotHardware {
     public void init()    {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         frontLeftMotor = myOpMode.hardwareMap.get(DcMotor.class, "frontLeftMotor");
-
-
+        frontRightMotor = myOpMode.hardwareMap.get(DcMotor.class, "frontRightMotor");
+        armMotor = myOpMode.hardwareMap.get(DcMotor.class, "armMotor");
 
 
 
@@ -73,9 +76,9 @@ public class RobotHardware {
 
         // Define and initialize ALL other installed servos.
         leftHand = myOpMode.hardwareMap.get(Servo.class, "left_hand");
-
+        rightHand = myOpMode.hardwareMap.get(Servo.class, "right_hand");
         leftHand.setPosition(MID_SERVO);
-
+        rightHand.setPosition(MID_SERVO);
 
 
 /**FOR MECANUM Wheel driving
@@ -115,13 +118,17 @@ public class RobotHardware {
      */
     public void driveTankRobot(double Drive, double Turn) {
         // Combine drive and turn for blended motion.
-
-
+    double left = Drive+Turn;
+    double right = Drive+Turn;
         // Scale the values so neither exceed +/- 1.0
-
-
+        double max  = Math.max (Math.abs(left),Math.abs(right));
+        if(max >1.0) {
+            left /= max;
+            right /= max;
+        }
         // send power values to both motors.  Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-
+        frontRightMotor.setPower(right);
+        frontLeftMotor.setPower(left);
     }
 
 
@@ -129,7 +136,7 @@ public class RobotHardware {
      * @param power driving power (-1.0 to 1.0)
     */
     public void setArmPower(double power) {
-
+        armMotor.setPower(power);
     }
 
 
@@ -139,6 +146,9 @@ public class RobotHardware {
      * @param offset
     */
     public void setHandPositions(double offset) {
+        offset = Range.clip(offset,-0.5,0.5);
+        leftHand.setPosition(MID_SERVO+offset);
+        rightHand.setPosition(MID_SERVO-offset);
 
     }
 
