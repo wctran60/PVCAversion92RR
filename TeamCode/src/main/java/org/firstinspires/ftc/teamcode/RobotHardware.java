@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -64,6 +65,7 @@ public class RobotHardware {
          *  Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
          *  Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
         */
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
@@ -119,7 +121,7 @@ public class RobotHardware {
     public void driveTankRobot(double Drive, double Turn) {
         // Combine drive and turn for blended motion.
     double left = Drive+Turn;
-    double right = Drive+Turn;
+    double right = Drive-Turn;
         // Scale the values so neither exceed +/- 1.0
         double max  = Math.max (Math.abs(left),Math.abs(right));
         if(max >1.0) {
