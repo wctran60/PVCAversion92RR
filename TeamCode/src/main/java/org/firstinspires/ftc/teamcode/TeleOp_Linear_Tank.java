@@ -60,8 +60,8 @@ public class TeleOp_Linear_Tank extends LinearOpMode {
             // Run wheels in POV mode (note: The joystick goes negative when pushed forward, so negate it)
             // In this mode the Left stick moves the robot forward and back, the Right stick turns left and right.
             // This way it's also easy to just drive straight, or just turn.
-            drive = -gamepad1.left_stick_y;
-            turn  = gamepad1.right_stick_x;
+            drive = -gamepad1.left_stick_y * 0.5;
+            turn  = gamepad1.right_stick_x * 0.5;
 
             // Combine drive and turn for blended motion. Use RobotHardware class
             //robot.driveTankRobot(drive, turn);
@@ -71,23 +71,32 @@ public class TeleOp_Linear_Tank extends LinearOpMode {
             // Each time around the loop, the servos will move by a small amount.
             // Limit the total offset to half of the full travel range
 
-            if(gamepad1.right_bumper)
-            handOffset += robot.HAND_SPEED;
-            else if (gamepad1.left_bumper)
-                handOffset -= robot.HAND_SPEED;
-            handOffset = Range.clip(handOffset,-0.5,0.5);
+            if(gamepad1.right_bumper) {
+                robot.closeClaw();
+                //handOffset += robot.HAND_SPEED;
+            }
+            else if (gamepad1.left_bumper) {
+                robot.openClaw();
+                //handOffset -= robot.HAND_SPEED;
+            }
+            //handOffset = Range.clip(handOffset,-0.5,0.5);
             // Move both servos to new position.  Use RobotHardware class
 
-            robot.setHandPositions(handOffset);
+            //robot.setHandPositions(handOffset);
             // Use gamepad buttons to move arm up (Y) and down (A).  Use the MOTOR constants defined in RobotHardware class.
             if (gamepad1.y) {
-                arm = robot.ARM_UP_POWER;
+                robot.setArmPosition(1000,0.2);
+//                arm = robot.ARM_UP_POWER;
+            } else if (gamepad1.x) {
+                robot.setArmPosition(500,0.2);
+//              arm = robot.ARM_DOWN_POWER;
             } else if (gamepad1.a) {
-              arm = robot.ARM_DOWN_POWER;
+                robot.setArmPosition(0,0.2);
+//              arm = robot.ARM_DOWN_POWER;
             } else {
-              arm = 0;
+//              arm = 0;
             }
-            robot.setArmPower(arm);
+            //robot.setArmPower(arm);
             // Send telemetry messages to explain controls and show robot status
             telemetry.addData("Drive", "Left Stick");
             telemetry.addData("Turn", "Right Stick");
