@@ -66,6 +66,11 @@ public class RobotHardware {
          *  Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
         */
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setPower(0);
 
 
 
@@ -79,8 +84,8 @@ public class RobotHardware {
         // Define and initialize ALL other installed servos.
         leftHand = myOpMode.hardwareMap.get(Servo.class, "left_hand");
         rightHand = myOpMode.hardwareMap.get(Servo.class, "right_hand");
-        leftHand.setPosition(MID_SERVO);
-        rightHand.setPosition(MID_SERVO);
+//        leftHand.setPosition(MID_SERVO);
+//        rightHand.setPosition(MID_SERVO);
 
 
 /**FOR MECANUM Wheel driving
@@ -137,9 +142,9 @@ public class RobotHardware {
     /** Pass requested ARM power to the appropriate hardware drive motor
      * @param power driving power (-1.0 to 1.0)
     */
-    public void setArmPower(double power) {
-        armMotor.setPower(power);
-    }
+    //public void setArmPower(double power) {
+        //armMotor.setPower(power);
+    //}
 
 
 
@@ -153,7 +158,19 @@ public class RobotHardware {
         rightHand.setPosition(MID_SERVO-offset);
 
     }
-
+    public void openClaw(){
+        leftHand.setPosition(.15);
+        rightHand.setPosition(.85);
+    }
+    public void closeClaw(){
+        leftHand.setPosition(0);
+        rightHand.setPosition(1);
+    }
+    public void setArmPosition(int desiredPositon, double power){
+        armMotor.setTargetPosition(desiredPositon);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armMotor.setPower(power);
+    }
 }
 
 
